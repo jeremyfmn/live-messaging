@@ -1,10 +1,14 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var app = express();
 
 var server = app.listen(3000, () => {
  console.log('server is running on port', server.address().port);
 });
+
+io.listen(server);
 
 app.use(express.static(__dirname));
 
@@ -31,6 +35,11 @@ app.post('/messages', (req, res) => {
   message.save((err) => {
     if(err)
       sendStatus(500);
+    io.emit('message', req.body);
     res.sendStatus(200);
   })
 });
+
+io.on('connection', () =>{
+ console.log('a user is connected');
+})

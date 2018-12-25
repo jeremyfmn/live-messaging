@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-   <!-- include bootstap and jquery cdn -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-    </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
-    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
     <div class="container">
@@ -36,13 +34,15 @@
          $("#messages").append('<h4>' + message.name + '</h4> <p>' + message.message + '</p>');
        }
       function getMessages(){
-      $.get('http://localhost:3000/messages', (data) => {
+      $.get('http://192.168.0.24:3000/messages', (data) => {
         data.forEach(addMessages);
        })
       }
       function sendMessage(message){
-       $.post('http://localhost:3000/messages', message)
+       $.post('http://192.168.0.24:3000/messages', message)
       }
+      var socket = io();
+      socket.on('message', addMessages)
     </script>
   </body>
 </html>
